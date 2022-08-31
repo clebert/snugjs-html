@@ -63,16 +63,14 @@ describe(`ElementCache`, () => {
     });
 
     test(`non-existent key string`, () => {
-      expect(ElementCache.default.createElement(`a`, {string: `foo`})).toBeInstanceOf(HTMLAnchorElement);
+      const key = {string: `foo`};
 
-      expect(ElementCache.default.createElement(`a`, {string: `bar`})).not.toBe(
-        ElementCache.default.createElement(`a`, {}),
-      );
+      expect(ElementCache.default.createElement(`a`, key)).toBeInstanceOf(HTMLAnchorElement);
+      expect(ElementCache.default.createElement(`a`, key)).toBe(ElementCache.default.createElement(`a`, key));
+      expect(ElementCache.default.createElement(`a`, key)).not.toBe(element);
 
-      expect(ElementCache.default.createElement(`div`, {string: `baz`})).toBeInstanceOf(HTMLDivElement);
-
-      expect(ElementCache.default.createElement(`div`, {string: `qux`})).not.toBe(
-        ElementCache.default.createElement(`div`, {}),
+      expect(ElementCache.default.createElement(`a`, key)).not.toBe(
+        ElementCache.default.createElement(`a`, {string: `bar`}),
       );
     });
 
@@ -81,8 +79,8 @@ describe(`ElementCache`, () => {
 
       document.body.appendChild(element);
 
-      expect(ElementCache.default.createElement(`a`, {})).not.toBe(element);
       expect(ElementCache.default.createElement(`a`, key)).toBe(element);
+      expect(ElementCache.default.createElement(`a`, {})).not.toBe(element);
       expect(ElementCache.default.createElement(`a`, {string: `bar`})).not.toBe(element);
 
       element.remove();
@@ -97,7 +95,7 @@ describe(`ElementCache`, () => {
     test(`duplicate key string`, () => {
       ElementCache.default.createElement(`a`, {string: `foo`});
 
-      expect(() => ElementCache.default.createElement(`div`, {string: `foo`})).toThrow(
+      expect(() => ElementCache.default.createElement(`a`, {string: `foo`})).toThrow(
         `The string representation of a key is already associated with another key.`,
       );
     });

@@ -10,8 +10,7 @@
   "author": "Clemens Akens",
   "sideEffects": false,
   "type": "module",
-  "exports": "./lib/mod.js",
-  "types": "./lib/mod.d.ts",
+  "exports": "./lib/index.js",
   "files": [
     "lib"
   ],
@@ -24,7 +23,7 @@
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "lint": "eslint .",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --silent --passWithNoTests",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --silent",
     "release": "npm version",
     "postrelease": "git push --follow-tags"
   },
@@ -32,11 +31,11 @@
     "@jest/globals": "^29.1.2",
     "@onecfg/standard": "^6.5.1",
     "@size-limit/preset-small-lib": "^8.1.0",
-    "@swc/core": "^1.3.4",
+    "@swc/core": "^1.3.7",
     "@swc/jest": "^0.2.23",
-    "@typescript-eslint/eslint-plugin": "^5.39.0",
-    "@typescript-eslint/parser": "^5.39.0",
-    "eslint": "^8.24.0",
+    "@typescript-eslint/eslint-plugin": "^5.40.0",
+    "@typescript-eslint/parser": "^5.40.0",
+    "eslint": "^8.25.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-markdown": "^3.0.0",
@@ -54,13 +53,13 @@
   "size-limit": [
     {
       "name": "compression on",
-      "limit": "1119 B",
-      "path": "./lib/mod.js"
+      "limit": "489 B",
+      "path": "./lib/index.js"
     },
     {
       "name": "compression off",
-      "limit": "2531 B",
-      "path": "./lib/mod.js",
+      "limit": "894 B",
+      "path": "./lib/index.js",
       "gzip": false
     }
   ],

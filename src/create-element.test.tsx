@@ -1,138 +1,111 @@
-/**
- * @jest-environment jsdom
- */
+/** @jest-environment jsdom */
+/** @jsx createElement */
+/** @jsxFrag createFragment */
 
-import {afterEach, describe, expect, jest, test} from '@jest/globals';
+import {beforeAll, beforeEach, describe, expect, jest, test} from '@jest/globals';
 import type {ElementFactory} from './create-element-factory.js';
+import {createElementFactory} from './create-element-factory.js';
 import {createElement} from './create-element.js';
-import {ElementCache} from './element-cache.js';
+import {createFragment} from './create-fragment.js';
 
 describe(`createElement()`, () => {
-  afterEach(() => {
-    ElementCache.default.reset();
+  class CustomElement extends HTMLElement {}
+
+  beforeAll(() => {
+    customElements.define(`x-custom`, CustomElement);
   });
 
-  describe(`with tag name`, () => {
-    test(`instance type`, () => {
-      expect(createElement(`a`, {})).toBeInstanceOf(HTMLAnchorElement);
-      expect(<a />).toBeInstanceOf(HTMLAnchorElement);
-    });
+  const callback = jest.fn();
 
-    test(`key without string`, () => {
-      const key: JSX.ElementKey = {};
-      const element = createElement(`a`, {key});
+  let Custom: ElementFactory<{boolean?: boolean; number?: number; string?: string; null?: null; unknown?: unknown}>;
 
-      expect(element).toBe(<a key={key} />);
-      expect(element.getAttribute(`key`)).toBe(null);
-      expect(element.getAttribute(ElementCache.keyAttributeName)).toBe(null);
-    });
-
-    test(`key with string`, () => {
-      const key: JSX.ElementKey = {string: `foo`};
-      const element = createElement(`a`, {key});
-
-      expect(element).toBe(<a key={key} />);
-      expect(element.getAttribute(`key`)).toBe(null);
-      expect(element.getAttribute(ElementCache.keyAttributeName)).toBe(`foo`);
-    });
-
-    test(`no children`, () => {
-      expect(createElement(`div`, {}).childNodes).toHaveLength(0);
-      expect((<div />).childNodes).toHaveLength(0);
-    });
-
-    test(`single child`, () => {
-      const element = createElement(`div`, {}, <a />);
-
-      expect(element.childNodes).toHaveLength(1);
-      expect(element.childNodes[0]?.nodeName).toBe(`A`);
-
-      expect(
-        (
-          <div>
-            <a />
-          </div>
-        ).childNodes,
-      ).toHaveLength(1);
-    });
-
-    test(`children`, () => {
-      const element = createElement(`div`, {}, <a />, <span />);
-
-      expect(element.childNodes).toHaveLength(2);
-      expect(element.childNodes[0]?.nodeName).toBe(`A`);
-      expect(element.childNodes[1]?.nodeName).toBe(`SPAN`);
-
-      expect(
-        (
-          <div>
-            <a />
-            <span />
-          </div>
-        ).childNodes,
-      ).toHaveLength(2);
-    });
-
-    test(`replace children`, () => {
-      const key: JSX.ElementKey = {};
-      const element = createElement(`div`, {key}, <a />, <span />);
-
-      expect(element.childNodes).toHaveLength(2);
-
-      createElement(`div`, {key});
-
-      expect(element.childNodes).toHaveLength(0);
-    });
-
-    test(`replace HTML attributes`, () => {
-      const key: JSX.ElementKey = {string: `foo`};
-      const element = createElement(`a`, {key, href: `example.com`});
-
-      expect(element.getAttribute(`href`)).toBe(`example.com`);
-      expect(element.getAttribute(`key`)).toBe(null);
-      expect(element.getAttribute(ElementCache.keyAttributeName)).toBe(`foo`);
-
-      createElement(`a`, {key});
-
-      expect(element.getAttribute(`href`)).toBe(null);
-      expect(element.getAttribute(`key`)).toBe(null);
-      expect(element.getAttribute(ElementCache.keyAttributeName)).toBe(`foo`);
-    });
+  beforeEach(() => {
+    Custom = createElementFactory(`x-custom`, callback);
   });
 
-  describe(`with element factory`, () => {
-    const element = <a />;
-    const Test = jest.fn<ElementFactory<{readonly a?: string}>>(() => element);
+  test(`instance`, () => {
+    expect(<a />).toBeInstanceOf(HTMLAnchorElement);
+    expect(<Custom />).toBeInstanceOf(CustomElement);
+    expect(<a />).not.toBeInstanceOf(CustomElement);
+    expect(<Custom />).not.toBeInstanceOf(HTMLAnchorElement);
+  });
 
-    test(`attributes`, () => {
-      expect(createElement(Test, {key: {}, a: `foo`})).toBe(element);
-      expect(<Test key={{}} a="foo" />).toBe(element);
-      expect(Test).toHaveBeenCalledTimes(2);
-      expect(Test.mock.calls[0]).toEqual([{key: {}, a: `foo`, children: []}]);
-      expect(Test.mock.calls[1]).toEqual([{key: {}, a: `foo`, children: []}]);
-    });
+  test(`key`, () => {
+    const key1 = {};
+    const key2 = {};
 
-    test(`single child`, () => {
-      expect(createElement(Test, {}, `foo`)).toBe(element);
-      expect(<Test>foo</Test>).toBe(element);
-      expect(Test).toHaveBeenCalledTimes(2);
-      expect(Test.mock.calls[0]).toEqual([{children: [`foo`]}]);
-      expect(Test.mock.calls[1]).toEqual([{children: [`foo`]}]);
-    });
+    expect(<a />).not.toBe(<a />);
+    expect(<Custom />).not.toBe(<Custom />);
+    expect(<a key={key1} />).toBe(<a key={key1} />);
+    expect(<Custom key={key2} />).toBe(<Custom key={key2} />);
+    expect(<a key={key1} />).not.toBe(<a key={{}} />);
+    expect(<Custom key={key2} />).not.toBe(<Custom key={{}} />);
+    expect(() => <a key={key2} />).toThrowError(`cannot use key with tag: a`);
+    expect(() => <Custom key={key1} />).toThrowError(`cannot use key with tag: x-custom`);
+  });
 
-    test(`children`, () => {
-      expect(createElement(Test, {}, `foo`, <span />)).toBe(element);
+  test(`attributes`, () => {
+    const key = {};
+    const customElement = (<Custom key={key} boolean number={42} string="test" null={null} />) as CustomElement;
 
-      expect(
-        <Test>
-          foo
-          <span />
-        </Test>,
-      ).toBe(element);
+    expect(customElement.getAttributeNames()).toEqual([`boolean`, `number`, `string`]);
+    expect(customElement.getAttribute(`boolean`)).toBe(``);
+    expect(customElement.getAttribute(`number`)).toBe(`42`);
+    expect(customElement.getAttribute(`string`)).toBe(`test`);
 
-      expect(Test).toHaveBeenCalledTimes(2);
-      expect(Test.mock.calls[0]).toEqual([{children: [`foo`, <span />]}]);
-      expect(Test.mock.calls[1]).toEqual([{children: [`foo`, <span />]}]);
-    });
+    <Custom key={key} />;
+
+    expect(customElement.getAttributeNames()).toEqual([]);
+    expect(customElement.getAttribute(`boolean`)).toBe(null);
+    expect(customElement.getAttribute(`number`)).toBe(null);
+    expect(customElement.getAttribute(`string`)).toBe(null);
+
+    <Custom key={key} boolean={false} number={NaN} string="" null={null} />;
+
+    expect(customElement.getAttributeNames()).toEqual([`number`, `string`]);
+    expect(customElement.getAttribute(`boolean`)).toBe(null);
+    expect(customElement.getAttribute(`number`)).toBe(`NaN`);
+    expect(customElement.getAttribute(`string`)).toBe(``);
+
+    <Custom key={key} boolean={undefined} number={undefined} string={undefined} null={undefined} />;
+
+    expect(customElement.getAttributeNames()).toEqual([]);
+    expect(customElement.getAttribute(`boolean`)).toBe(null);
+    expect(customElement.getAttribute(`number`)).toBe(null);
+    expect(customElement.getAttribute(`string`)).toBe(null);
+
+    expect(() => <Custom key={key} unknown={{}} />).toThrowError(`cannot set attribute: unknown`);
+    expect(() => <Custom key={key} unknown={[]} />).toThrowError(`cannot set attribute: unknown`);
+    expect(() => <Custom key={key} unknown={Symbol()} />).toThrowError(`cannot set attribute: unknown`);
+  });
+
+  test(`children`, () => {
+    const anchorElement = (
+      <a>
+        {`foo`}
+        {`bar`}
+      </a>
+    ) as HTMLAnchorElement;
+
+    const customElement = (
+      <Custom>
+        {`foo`}
+        {`bar`}
+      </Custom>
+    ) as CustomElement;
+
+    const fragment = (
+      <>
+        {`foo`}
+        {`bar`}
+      </>
+    );
+
+    expect(anchorElement.childNodes).toEqual(fragment.childNodes);
+    expect(anchorElement.getAttributeNames()).toEqual([]);
+    expect(customElement.childNodes).toHaveLength(0);
+    expect(customElement.getAttributeNames()).toEqual([]);
+    expect(callback).toHaveBeenCalledTimes(1);
+    expect(callback).toHaveBeenCalledWith(customElement, fragment);
   });
 });

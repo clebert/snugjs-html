@@ -40,18 +40,6 @@ writeFiles(
     ],
   }),
 
-  mergeContent(swc.configFile, {
-    jsc: {
-      parser: {tsx: true},
-      transform: {
-        react: {pragma: `createElement`, pragmaFrag: `createFragment`},
-      },
-    },
-  }),
-
-  ...typescript.mergeCompilerOptions({
-    jsx: `react`,
-    jsxFactory: `createElement`,
-    jsxFragmentFactory: `createFragment`,
-  }),
+  mergeContent(swc.configFile, {jsc: {parser: {tsx: true}}}),
+  ...typescript.mergeCompilerOptions({jsx: `react`}),
 );

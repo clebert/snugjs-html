@@ -1,5 +1,7 @@
+import type {createElement} from './create-element.js';
+
 export function createFragment(
-  props: JSX.ElementChildrenAttribute,
+  props: createElement.JSX.ElementChildrenAttribute,
 ): DocumentFragment {
   const {children} = props;
   const fragment = document.createDocumentFragment();
@@ -8,13 +10,10 @@ export function createFragment(
     for (const child of children) {
       fragment.appendChild(createFragment({children: child}));
     }
-  } else if (
-    children instanceof HTMLElement ||
-    children instanceof DocumentFragment
-  ) {
+  } else if (children instanceof Node) {
     fragment.appendChild(children);
-  } else if (typeof children === `string` || typeof children === `number`) {
-    fragment.append(String(children));
+  } else if (typeof children === `number` || typeof children === `string`) {
+    fragment.append(`${children}`);
   }
 
   return fragment;

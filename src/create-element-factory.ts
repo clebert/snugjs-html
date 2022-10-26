@@ -13,7 +13,7 @@ export function createElementFactory<TProps extends object>(
   tagName: string,
   callback: (
     element: createElement.JSX.Element,
-    children: DocumentFragment,
+    childNodes: readonly Node[],
   ) => void,
 ): ElementFactory<TProps> {
   return ({children, key, ...props}) => {
@@ -55,7 +55,7 @@ export function createElementFactory<TProps extends object>(
       }
     }
 
-    callback(element, createFragment({children}));
+    callback(element, Array.from(createFragment({children}).childNodes));
 
     return element;
   };

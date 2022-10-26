@@ -1,12 +1,10 @@
 /** @jest-environment jsdom */
 /** @jsx createElement */
-/** @jsxFrag createFragment */
 
 import {beforeAll, beforeEach, describe, expect, jest, test} from '@jest/globals';
 import type {ElementFactory} from './create-element-factory.js';
 import {createElementFactory} from './create-element-factory.js';
 import {createElement} from './create-element.js';
-import {createFragment} from './create-fragment.js';
 
 describe(`createElement()`, () => {
   class CustomElement extends HTMLElement {}
@@ -94,18 +92,13 @@ describe(`createElement()`, () => {
       </Custom>
     ) as CustomElement;
 
-    const fragment = (
-      <>
-        {`foo`}
-        {`bar`}
-      </>
-    );
+    const childNodes = [document.createTextNode(`foo`), document.createTextNode(`bar`)];
 
-    expect(anchorElement.childNodes).toEqual(fragment.childNodes);
+    expect(Array.from(anchorElement.childNodes)).toEqual(childNodes);
     expect(anchorElement.getAttributeNames()).toEqual([]);
     expect(customElement.childNodes).toHaveLength(0);
     expect(customElement.getAttributeNames()).toEqual([]);
     expect(callback).toHaveBeenCalledTimes(1);
-    expect(callback).toHaveBeenCalledWith(customElement, fragment);
+    expect(callback).toHaveBeenNthCalledWith(1, customElement, childNodes);
   });
 });

@@ -53,12 +53,12 @@
   "size-limit": [
     {
       "name": "compression on",
-      "limit": "489 B",
+      "limit": "499 B",
       "path": "./lib/index.js"
     },
     {
       "name": "compression off",
-      "limit": "894 B",
+      "limit": "920 B",
       "path": "./lib/index.js",
       "gzip": false
     }

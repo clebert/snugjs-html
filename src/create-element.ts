@@ -28,9 +28,9 @@ export function createElement(
 
 function replaceChildren(
   element: createElement.JSX.Element,
-  children: DocumentFragment,
+  childNodes: readonly Node[],
 ): void {
-  element.replaceChildren(children);
+  element.replaceChildren(...childNodes);
 }
 
 export namespace createElement {

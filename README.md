@@ -1,6 +1,6 @@
 # @snugjs/html
 
-> A JSX supporting API to conveniently create HTML elements and fragments.
+> Create HTML elements and fragments using JSX.
 
 ## Installation
 

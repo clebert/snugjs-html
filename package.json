@@ -1,7 +1,7 @@
 {
   "name": "@snugjs/html",
   "version": "3.0.0",
-  "description": "A JSX supporting API to conveniently create HTML elements and fragments.",
+  "description": "Create HTML elements and fragments using JSX.",
   "repository": {
     "type": "git",
     "url": "https://github.com/clebert/snugjs-html.git"

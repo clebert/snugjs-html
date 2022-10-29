@@ -5,7 +5,7 @@
 import {describe, expect, test} from '@jest/globals';
 import {createElement, createFragment} from './index.js';
 
-function getChildren(node: Node): Node[] {
+function getChildNodes(node: Node): Node[] {
   return [...node.childNodes];
 }
 
@@ -14,25 +14,25 @@ describe(`createFragment()`, () => {
     expect(<></>).toBeInstanceOf(DocumentFragment);
   });
 
-  test(`children`, () => {
-    expect(getChildren(<></>)).toEqual([]);
-    expect(getChildren(<>{false}</>)).toEqual([]);
-    expect(getChildren(<>{true}</>)).toEqual([]);
-    expect(getChildren(<>{null}</>)).toEqual([]);
-    expect(getChildren(<>{undefined}</>)).toEqual([]);
-    expect(getChildren(<>{{}}</>)).toEqual([]);
-    expect(getChildren(<>{[]}</>)).toEqual([]);
-    expect(getChildren(<>{0}</>)).toEqual([document.createTextNode(`0`)]);
-    expect(getChildren(<>{-42}</>)).toEqual([document.createTextNode(`-42`)]);
-    expect(getChildren(<>{Math.PI}</>)).toEqual([document.createTextNode(`${Math.PI}`)]);
-    expect(getChildren(<>{NaN}</>)).toEqual([document.createTextNode(`NaN`)]);
-    expect(getChildren(<>{``}</>)).toEqual([document.createTextNode(``)]);
-    expect(getChildren(<>{`foo`}</>)).toEqual([document.createTextNode(`foo`)]);
-    expect(getChildren(<>{<a />}</>)).toEqual([<a />]);
-    expect(getChildren(<>{document.createTextNode(`bar`)}</>)).toEqual([document.createTextNode(`bar`)]);
+  test(`child nodes`, () => {
+    expect(getChildNodes(<></>)).toEqual([]);
+    expect(getChildNodes(<>{false}</>)).toEqual([]);
+    expect(getChildNodes(<>{true}</>)).toEqual([]);
+    expect(getChildNodes(<>{null}</>)).toEqual([]);
+    expect(getChildNodes(<>{undefined}</>)).toEqual([]);
+    expect(getChildNodes(<>{{}}</>)).toEqual([]);
+    expect(getChildNodes(<>{[]}</>)).toEqual([]);
+    expect(getChildNodes(<>{0}</>)).toEqual([document.createTextNode(`0`)]);
+    expect(getChildNodes(<>{-42}</>)).toEqual([document.createTextNode(`-42`)]);
+    expect(getChildNodes(<>{Math.PI}</>)).toEqual([document.createTextNode(`${Math.PI}`)]);
+    expect(getChildNodes(<>{NaN}</>)).toEqual([document.createTextNode(`NaN`)]);
+    expect(getChildNodes(<>{``}</>)).toEqual([document.createTextNode(``)]);
+    expect(getChildNodes(<>{`foo`}</>)).toEqual([document.createTextNode(`foo`)]);
+    expect(getChildNodes(<>{<a />}</>)).toEqual([<a />]);
+    expect(getChildNodes(<>{document.createTextNode(`bar`)}</>)).toEqual([document.createTextNode(`bar`)]);
 
     expect(
-      getChildren(
+      getChildNodes(
         <>
           <></>
         </>,
@@ -40,7 +40,7 @@ describe(`createFragment()`, () => {
     ).toEqual([]);
 
     expect(
-      getChildren(
+      getChildNodes(
         <>
           {0}
           {``}

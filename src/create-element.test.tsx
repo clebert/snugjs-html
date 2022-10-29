@@ -2,13 +2,12 @@
 /** @jsx createElement */
 
 import {beforeAll, beforeEach, describe, expect, jest, test} from '@jest/globals';
-import type {ElementFactory} from './create-element-factory.js';
-import {createElementFactory} from './create-element-factory.js';
-import {createElement} from './create-element.js';
+import type {ElementFactory} from './index.js';
+import {createElement, createElementFactory} from './index.js';
+
+class CustomElement extends HTMLElement {}
 
 describe(`createElement()`, () => {
-  class CustomElement extends HTMLElement {}
-
   beforeAll(() => {
     customElements.define(`x-custom`, CustomElement);
   });
@@ -77,7 +76,7 @@ describe(`createElement()`, () => {
     expect(() => <Custom key={key} unknown={Symbol()} />).toThrowError(`cannot set attribute: unknown`);
   });
 
-  test(`children`, () => {
+  test(`child nodes`, () => {
     const anchorElement = (
       <a>
         {`foo`}

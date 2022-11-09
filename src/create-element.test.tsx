@@ -1,5 +1,4 @@
 /** @jest-environment jsdom */
-/** @jsx createElement */
 
 import {beforeAll, beforeEach, describe, expect, jest, test} from '@jest/globals';
 import type {ElementFactory} from './index.js';

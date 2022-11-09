@@ -1,6 +1,4 @@
 /** @jest-environment jsdom */
-/** @jsx createElement */
-/** @jsxFrag createFragment */
 
 import {describe, expect, test} from '@jest/globals';
 import {createElement, createFragment} from './index.js';

@@ -2,7 +2,7 @@
 
 import {beforeAll, beforeEach, describe, expect, jest, test} from '@jest/globals';
 import type {ElementFactory} from './index.js';
-import {createElement, createElementFactory} from './index.js';
+import {createElement, createElementFactory, elementByKey} from './index.js';
 
 class CustomElement extends HTMLElement {}
 
@@ -38,6 +38,8 @@ describe(`createElement()`, () => {
     expect(<Custom key={key2} />).not.toBe(<Custom key={{}} />);
     expect(() => <a key={key2} />).toThrowError(`cannot use key with tag: a`);
     expect(() => <Custom key={key1} />).toThrowError(`cannot use key with tag: x-custom`);
+    expect(<a key={key1} />).toBe(elementByKey.get(key1));
+    expect(<Custom key={key2} />).toBe(elementByKey.get(key2));
   });
 
   test(`attributes`, () => {

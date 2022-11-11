@@ -1,13 +1,12 @@
 import type {createElement} from './create-element.js';
 import {createFragment} from './create-fragment.js';
+import {elementByKey} from './element-by-key.js';
 
 export type ElementFactory<TProps extends object> = (
   props: TProps &
     createElement.JSX.ElementChildrenAttribute &
     createElement.JSX.ElementKeyAttribute,
 ) => createElement.JSX.Element;
-
-const elementByKey = new WeakMap<object, HTMLElement>();
 
 export function createElementFactory<TProps extends object>(
   tagName: string,

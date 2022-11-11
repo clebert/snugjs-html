@@ -59,7 +59,7 @@
     },
     {
       "name": "gzip compression",
-      "limit": "499 B",
+      "limit": "500 B",
       "path": "./lib/index.js",
       "gzip": true
     },

@@ -63,7 +63,7 @@ export namespace createElement {
       /** Classes to which the element belongs */
       readonly class?: string;
       /** Whether the element is editable */
-      readonly contenteditable?: 'true' | 'false';
+      readonly contenteditable?: 'true' | 'plaintext-only' | 'false';
       /** The text directionality of the element */
       readonly dir?: 'ltr' | 'rtl' | 'auto';
       /** Whether the element is draggable */
@@ -78,7 +78,7 @@ export namespace createElement {
         | 'search'
         | 'send';
       /** Whether the element is relevant */
-      readonly hidden?: boolean;
+      readonly hidden?: boolean | 'until-found';
       /** The element's ID */
       readonly id?: string;
       /** Whether the element is inert. */
@@ -109,6 +109,8 @@ export namespace createElement {
       readonly lang?: string;
       /** Cryptographic nonce used in Content Security Policy checks [CSP] */
       readonly nonce?: string;
+      /** Makes the element a popover element */
+      readonly popover?: 'auto' | 'manual';
       /** Affects willValidate, plus any behavior added by the custom element author */
       readonly readonly?: boolean;
       /** The element's desired slot */
@@ -139,7 +141,7 @@ export namespace createElement {
         readonly referrerpolicy?: string;
         /** Relationship between the location in the document containing the hyperlink and the destination resource */
         readonly rel?: string;
-        /** Browsing context for hyperlink navigation */
+        /** Navigable for hyperlink navigation */
         readonly target?: string;
         /** Hint for the type of the referenced resource */
         readonly type?: string;
@@ -166,7 +168,7 @@ export namespace createElement {
         readonly rel?: string;
         /** The kind of shape to be created in an image map */
         readonly shape?: 'circle' | 'default' | 'poly' | 'rect';
-        /** Browsing context for hyperlink navigation */
+        /** Navigable for hyperlink navigation */
         readonly target?: string;
       };
       readonly article: IntrinsicElement & {};
@@ -191,7 +193,7 @@ export namespace createElement {
       readonly base: IntrinsicElement & {
         /** Document base URL */
         readonly href?: string;
-        /** Default browsing context for hyperlink navigation and form submission */
+        /** Default navigable for hyperlink navigation and form submission */
         readonly target?: string;
       };
       readonly bdi: IntrinsicElement & {};
@@ -221,10 +223,14 @@ export namespace createElement {
         readonly formmethod?: 'GET' | 'POST' | 'dialog';
         /** Bypass form control validation for form submission */
         readonly formnovalidate?: boolean;
-        /** Browsing context for form submission */
+        /** Navigable for form submission */
         readonly formtarget?: string;
         /** Name of the element to use for form submission and in the form.elements API */
         readonly name?: string;
+        /** Targets a popover element to toggle, show, or hide */
+        readonly popovertarget?: string;
+        /** Indicates whether a targeted popover element is to be toggled, shown, or hidden */
+        readonly popovertargetaction?: 'toggle' | 'show' | 'hide';
         /** Type of button */
         readonly type?: 'submit' | 'reset' | 'button';
         /** Value to be used for form submission */
@@ -314,7 +320,7 @@ export namespace createElement {
         readonly 'name'?: string;
         /** Bypass form control validation for form submission */
         readonly 'novalidate'?: boolean;
-        /** Browsing context for form submission */
+        /** Navigable for form submission */
         readonly 'target'?: string;
       };
       readonly h1: IntrinsicElement & {};
@@ -338,7 +344,7 @@ export namespace createElement {
         readonly height?: number;
         /** Used when determining loading deferral */
         readonly loading?: 'lazy' | 'eager';
-        /** Name of nested browsing context */
+        /** Name of content navigable */
         readonly name?: string;
         /** Referrer policy for fetches initiated by the element */
         readonly referrerpolicy?: string;
@@ -358,6 +364,8 @@ export namespace createElement {
         readonly crossorigin?: 'anonymous' | 'use-credentials';
         /** Decoding hint to use when processing this image for presentation */
         readonly decoding?: 'sync' | 'async' | 'auto';
+        /** Sets the priority for fetches initiated by the element */
+        readonly fetchpriority?: 'auto' | 'high' | 'low';
         /** Vertical dimension */
         readonly height?: number;
         /** Whether the image is a server-side image map */
@@ -403,7 +411,7 @@ export namespace createElement {
         readonly formmethod?: 'GET' | 'POST' | 'dialog';
         /** Bypass form control validation for form submission */
         readonly formnovalidate?: boolean;
-        /** Browsing context for form submission */
+        /** Navigable for form submission */
         readonly formtarget?: string;
         /** Vertical dimension */
         readonly height?: number;
@@ -425,6 +433,10 @@ export namespace createElement {
         readonly pattern?: string;
         /** User-visible label to be placed within the form control */
         readonly placeholder?: string;
+        /** Targets a popover element to toggle, show, or hide */
+        readonly popovertarget?: string;
+        /** Indicates whether a targeted popover element is to be toggled, shown, or hidden */
+        readonly popovertargetaction?: 'toggle' | 'show' | 'hide';
         /** Whether to allow the value to be edited by the user */
         readonly readonly?: boolean;
         /** Whether the control is required for form submission */
@@ -471,6 +483,8 @@ export namespace createElement {
         readonly crossorigin?: 'anonymous' | 'use-credentials';
         /** Whether the link is disabled */
         readonly disabled?: boolean;
+        /** Sets the priority for fetches initiated by the element */
+        readonly fetchpriority?: 'auto' | 'high' | 'low';
         /** Address of the hyperlink */
         readonly href?: string;
         /** Language of the linked resource */
@@ -541,7 +555,7 @@ export namespace createElement {
         readonly form?: string;
         /** Vertical dimension */
         readonly height?: number;
-        /** Name of nested browsing context */
+        /** Name of content navigable */
         readonly name?: string;
         /** Type of embedded resource */
         readonly type?: string;
@@ -607,6 +621,8 @@ export namespace createElement {
         readonly crossorigin?: 'anonymous' | 'use-credentials';
         /** Defer script execution */
         readonly defer?: boolean;
+        /** Sets the priority for fetches initiated by the element */
+        readonly fetchpriority?: 'auto' | 'high' | 'low';
         /** Integrity metadata used in Subresource Integrity checks [SRI] */
         readonly integrity?: string;
         /** Prevents execution in user agents that support module scripts */

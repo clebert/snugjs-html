@@ -1,8 +1,9 @@
 /** @jest-environment jsdom */
 
-import {beforeAll, beforeEach, describe, expect, jest, test} from '@jest/globals';
 import type {ElementFactory} from './index.js';
+
 import {createElement, createElementFactory, elementByKey} from './index.js';
+import {beforeAll, beforeEach, describe, expect, jest, test} from '@jest/globals';
 
 class CustomElement extends HTMLElement {}
 

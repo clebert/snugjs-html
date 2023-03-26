@@ -1,7 +1,7 @@
 /** @jest-environment jsdom */
 
-import {describe, expect, test} from '@jest/globals';
 import {createElement, createFragment} from './index.js';
+import {describe, expect, test} from '@jest/globals';
 
 function getChildNodes(node: Node): Node[] {
   return [...node.childNodes];

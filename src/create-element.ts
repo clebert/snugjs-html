@@ -1,4 +1,5 @@
 import type {ElementFactory} from './create-element-factory.js';
+
 import {createElementFactory} from './create-element-factory.js';
 
 export function createElement<

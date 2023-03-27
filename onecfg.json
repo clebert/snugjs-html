@@ -15,15 +15,6 @@
     "https://raw.githubusercontent.com/clebert/onecfg-lib/main/lib/onecfg-vscode.json"
   ],
   "patches": {
-    ".prettierrc.json": [
-      {
-        "value": {
-          "overrides": [
-            {"files": "**/*.test.tsx", "options": {"printWidth": 120}}
-          ]
-        }
-      }
-    ],
     ".swcrc": [
       {
         "value": {
@@ -46,11 +37,6 @@
             "jsxFragmentFactory": "createFragment"
           }
         }
-      }
-    ],
-    ".vscode/settings.json": [
-      {
-        "value": {"editor.rulers": [120]}
       }
     ]
   }

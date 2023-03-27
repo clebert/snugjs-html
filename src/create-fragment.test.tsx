@@ -22,12 +22,23 @@ describe(`createFragment()`, () => {
     expect(getChildNodes(<>{[]}</>)).toEqual([]);
     expect(getChildNodes(<>{0}</>)).toEqual([document.createTextNode(`0`)]);
     expect(getChildNodes(<>{-42}</>)).toEqual([document.createTextNode(`-42`)]);
-    expect(getChildNodes(<>{Math.PI}</>)).toEqual([document.createTextNode(`${Math.PI}`)]);
+
+    expect(getChildNodes(<>{Math.PI}</>)).toEqual([
+      document.createTextNode(`${Math.PI}`),
+    ]);
+
     expect(getChildNodes(<>{NaN}</>)).toEqual([document.createTextNode(`NaN`)]);
     expect(getChildNodes(<>{``}</>)).toEqual([document.createTextNode(``)]);
-    expect(getChildNodes(<>{`foo`}</>)).toEqual([document.createTextNode(`foo`)]);
+
+    expect(getChildNodes(<>{`foo`}</>)).toEqual([
+      document.createTextNode(`foo`),
+    ]);
+
     expect(getChildNodes(<>{<a />}</>)).toEqual([<a />]);
-    expect(getChildNodes(<>{document.createTextNode(`bar`)}</>)).toEqual([document.createTextNode(`bar`)]);
+
+    expect(getChildNodes(<>{document.createTextNode(`bar`)}</>)).toEqual([
+      document.createTextNode(`bar`),
+    ]);
 
     expect(
       getChildNodes(
